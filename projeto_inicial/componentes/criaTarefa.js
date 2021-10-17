@@ -11,8 +11,9 @@ import BotaoDeleta from './deletaTarefa.js'
     const calendario = document.querySelector('[data-form-date]');
     const dataSelecionada = moment(calendario.value);
     const dataFormatada = dataSelecionada.format('DD/MM/YYYY');
-
-    const dados = { valor, dataFormatada}
+    const horario = dataSelecionada.format('HH:mm')
+    const concluida = false;
+    const dados = { valor, dataFormatada, horario, concluida}
 
 
     let tarefasAtualizadas = [...tarefas, dados]
@@ -24,16 +25,19 @@ import BotaoDeleta from './deletaTarefa.js'
     carregaTarefa()
 }
 
-export const Tarefa = ({ valor, dataFormatada}) => {
+export const Tarefa = ({ valor, horario, concluida}, id) => {
 
     const tarefa = document.createElement('li')
-    tarefa.classList.add('task')
-    const conteudo = `<p class="content">${dataFormatada} | ${valor}</p>`
+    const conteudo = `<p class="content">${horario} | ${valor}</p>`
 
+    if(concluida) {
+        tarefa.classList.add('done');
+    }
+    tarefa.classList.add('task')
     tarefa.innerHTML = conteudo
 
-    tarefa.appendChild(BotaoConclui())
-    tarefa.appendChild(BotaoDeleta())
+    tarefa.appendChild(BotaoConclui(carregaTarefa, id))
+    tarefa.appendChild(BotaoDeleta(carregaTarefa, id))
 
     return tarefa;
 }
